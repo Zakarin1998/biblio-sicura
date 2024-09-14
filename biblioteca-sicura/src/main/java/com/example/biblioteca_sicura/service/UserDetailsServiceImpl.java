@@ -1,8 +1,8 @@
 // src/main/java/com/example/biblioteca/service/UserDetailsServiceImpl.java
-package com.example.biblioteca.service;
+package com.example.biblioteca_sicura.service;
 
-import com.example.biblioteca.model.User;
-import com.example.biblioteca.repository.UserRepository;
+import com.example.biblioteca_sicura.model.User;
+import com.example.biblioteca_sicura.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

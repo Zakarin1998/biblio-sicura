@@ -1,10 +1,10 @@
 // src/main/java/com/example/biblioteca/controller/BookController.java
-package com.example.biblioteca.controller;
+package com.example.biblioteca_sicura.controller;
 
-import com.example.biblioteca.model.Book;
-import com.example.biblioteca.model.User;
-import com.example.biblioteca.repository.BookRepository;
-import com.example.biblioteca.repository.UserRepository;
+import com.example.biblioteca_sicura.model.Book;
+import com.example.biblioteca_sicura.model.User;
+import com.example.biblioteca_sicura.repository.BookRepository;
+import com.example.biblioteca_sicura.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

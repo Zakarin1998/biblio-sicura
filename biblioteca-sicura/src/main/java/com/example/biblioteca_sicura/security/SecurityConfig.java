@@ -1,7 +1,7 @@
 // src/main/java/com/example/biblioteca/security/SecurityConfig.java
-package com.example.biblioteca.security;
+package com.example.biblioteca_sicura.security;
 
-import com.example.biblioteca.service.UserDetailsServiceImpl;
+import com.example.biblioteca_sicura.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
