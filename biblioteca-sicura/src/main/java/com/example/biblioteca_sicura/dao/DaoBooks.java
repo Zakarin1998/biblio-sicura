@@ -1,4 +1,4 @@
-package com.example.biblioteca_sicura;
+package com.example.biblioteca_sicura.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
