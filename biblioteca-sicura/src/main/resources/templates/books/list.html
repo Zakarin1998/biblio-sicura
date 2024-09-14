@@ -1,0 +1,16 @@
+<!-- src/main/resources/templates/books/list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books</title>
+</head>
+<body>
+    <h1>Books</h1>
+    <a href="/books/add">Add New Book</a>
+    <ul>
+        <th:block th:each="book : ${books}">
+            <li th:text="${book.title} + ' by ' + ${book.author}"></li>
+        </th:block>
+    </ul>
+</body>
+</html>
