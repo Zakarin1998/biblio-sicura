@@ -2,6 +2,15 @@ Per rendere il tuo progetto conforme ai principi di **Secure SDLC (Software Deve
 
 ### 1. **Sicurezza del Codice**
 
+Considerare i problemi di sicurezza. Dalla call del 14/09 emergono alcuni requisiti.
+
+- GDPR : i dati devono poter essere cancellati.
+- CRITTOGRAFIA : tecniche di crittografia per proteggere la privacy e nascondere dati sensibili.
+- LIVELLO DI LOGGING : aspetto delle singole funzionalità. (INFO, ERROR) Non loggare il nome del singolo componente.
+
+Inoltre, sono necessarie linee guida di sicurezza un po' più specifiche, affinchè siano rispettati i requisiti durante lo sviluppo. 
+Studio solido su quali problemi di sicurezza possono esserci e come risolvere. 
+
 #### a. **Gestione degli Errori e Logging**
 
 Assicurati che le informazioni sensibili non vengano esposte nei log o nei messaggi di errore.
