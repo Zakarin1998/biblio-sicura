@@ -1,13 +1,22 @@
 package com.example.biblioteca_sicura.controller;
 
-import com.example.biblioteca_sicura.model.Book;
-import com.example.biblioteca_sicura.repository.BookRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.example.biblioteca_sicura.model.Book;
+import com.example.biblioteca_sicura.repository.BookRepository;
 
 @RestController
 @RequestMapping("/ricerca")
@@ -23,7 +32,7 @@ public class SearchController {
         if (parola == null || parola.isEmpty()) {
             books = bookRepository.findAll();
         } else {
-            books = bookRepository.findByTitloContainingIgnoreCase(parola);
+            books = bookRepository.findByTitleContainingIgnoreCase(parola);
         }
         return ResponseEntity.ok(books);
     }
@@ -41,8 +50,8 @@ public class SearchController {
     @Secured("ROLE_ADMIN")
     public ResponseEntity<?> aggiornaLibro(@PathVariable Long isbn, @RequestBody Book libro) {
         return bookRepository.findById(isbn).map(existingBook -> {
-            existingBook.setTitolo(libro.getTitolo());
-            existingBook.setAutore(libro.getAutore());
+            existingBook.setTitle(libro.getTitle());
+            existingBook.setAuthor(libro.getAuthor());
             bookRepository.save(existingBook);
             return ResponseEntity.ok("Libro aggiornato con successo");
         }).orElse(ResponseEntity.notFound().build());
