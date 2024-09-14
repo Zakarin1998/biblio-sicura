@@ -1,4 +1,3 @@
-// src/main/java/com/example/biblioteca/service/UserDetailsServiceImpl.java
 package com.example.biblioteca_sicura.service;
 
 import com.example.biblioteca_sicura.model.User;
@@ -10,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -22,9 +21,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         return org.springframework.security.core.userdetails.User
-            .withUsername(user.getUsername())
-            .password(user.getPassword())
-            .roles(user.getRole())
-            .build();
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .roles(user.getRole())
+                .build();
     }
 }
