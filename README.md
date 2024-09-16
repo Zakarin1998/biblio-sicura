@@ -1,6 +1,69 @@
-Per rendere il tuo progetto conforme ai principi di **Secure SDLC (Software Development Life Cycle)**, dovresti considerare vari aspetti della sicurezza durante tutte le fasi dello sviluppo. Ecco alcuni punti che puoi aggiungere o migliorare nel tuo progetto per garantire che sia sicuro:
+# Biblioteca Sicura
 
-### 1. **Sicurezza del Codice**
+Il progetto Biblioteca Sicura propone una soluzione per gestire i seguenti usecase:
+
+- login
+- visualizza libri (utente)
+- carica/cancella libri (admin)
+
+Uno dei requisiti prevede che il progetto sia conforme ai principi di **Secure SDLC (Software Development Life Cycle)**, considerando i vari aspetti della sicurezza durante tutte le fasi dello sviluppo.
+
+## Creazione delle Tabelle
+
+Il primo punto debole per la sicurezza è l'accesso al database su cui sono salvate le credenziali dell'utente.
+
+
+Per creare il database si utilizzano script e si crea il file che contiene le DDL, con i comandi SQL provide instructions for executing it, follow these steps:
+
+### 1. Create the SQL File
+
+Create a file named `setup_login_system.sql` and add the following content:
+
+```sql
+-- Create the database
+CREATE DATABASE IF NOT EXISTS login_system;
+USE login_system;
+
+-- Create the users table
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Other tables and procedures
+```
+
+### 2. Save the File
+
+Save this content into a file named `setup_login_system.sql`.
+
+### 3. Execute the SQL File
+
+To execute the SQL file, you need to have MySQL installed and running. You can use the MySQL command-line tool to execute the file. Here's how you can do it:
+
+1. **Open a Terminal or Command Prompt:**
+
+2. **Navigate to the Directory:**
+   Change to the directory where `setup_login_system.sql` is located.
+
+3. **Run the SQL File:**
+   Use the following command to execute the SQL script, if your MySQL username is `root`, you would use::
+
+   ```bash
+   mysql -u root -p < setup_login_system.sql
+   ```
+
+   Replace `root` with your MySQL username. You will be prompted to enter your MySQL password.
+
+   After entering your password, the SQL commands in `setup_login_system.sql` will be executed, and your database and tables will be created.
+
+
+## Ricerca e Sviluppo di Nuove Funzionalità
+
+Ecco alcuni linee guida e punti che si possono aggiungere o migliorare in un progetto per garantire standard di sicurezza più elevati.
+
+### 1. **Requisiti di Esempio per la Sicurezza del Codice**
 
 Considerare i problemi di sicurezza. Dalla call del 14/09 emergono alcuni requisiti.
 
@@ -127,3 +190,4 @@ http
 - **Compliance**: Verifica che il progetto rispetti le normative e le leggi applicabili (es. GDPR, CCPA).
 
 Implementando queste pratiche, potrai assicurarti che il tuo progetto rispetti i principi del Secure SDLC e offra un livello di sicurezza adeguato. Se hai bisogno di ulteriori dettagli su uno di questi punti, fammelo sapere!
+

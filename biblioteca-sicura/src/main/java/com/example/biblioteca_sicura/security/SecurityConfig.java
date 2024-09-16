@@ -27,37 +27,31 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Configura le regole di sicurezza qui
         http
             .csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/auth/**").permitAll()  // Permetti l'accesso libero agli endpoint di autenticazione e registrazione
-            .antMatchers("/books/**").hasAnyRole("USER", "ADMIN") // Solo utenti autenticati possono vedere i libri
-            .antMatchers("/ricerca/**").hasRole("ADMIN")  // Solo gli admin possono aggiungere, modificare o cancellare libri
-            .anyRequest().authenticated();
-
-        // Aggiungi il filtro JWT
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                .requestMatchers("/auth/**").permitAll()  // Permetti l'accesso libero agli endpoint di autenticazione e registrazione
+                .requestMatchers("/books/**").hasAnyRole("USER", "ADMIN") // Solo utenti autenticati possono vedere i libri
+                .requestMatchers("/ricerca/**").hasRole("ADMIN")  // Solo gli admin possono aggiungere, modificare o cancellare libri
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // Definisci il bean per AuthenticationManager
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    // Definisci un PasswordEncoder per la gestione delle password
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Definisci UserDetailsService (puoi implementare un servizio personalizzato)
     @Bean
     public UserDetailsService userDetailsService() {
-        // Implementa UserDetailsService o utilizza uno già esistente
         return new CustomUserDetailsService();
     }
 }
