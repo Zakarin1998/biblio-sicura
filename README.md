@@ -17,6 +17,9 @@ Per creare il database si utilizzano script e si crea il file che contiene le DD
 
 ### 1. Create the SQL File
 
+Client MySql:
+http://www.mysql.com/downloads/mysql/
+
 Create a file named `setup_login_system.sql` and add the following content:
 
 ```sql
