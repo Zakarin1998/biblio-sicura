@@ -27,39 +27,41 @@ Create a file named `setup_login_system.sql` and add the following content:
 CREATE DATABASE IF NOT EXISTS login_system;
 USE login_system;
 
--- Create the users table
-CREATE TABLE IF NOT EXISTS users (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
-);
-
--- Other tables and procedures
 ```
 
-### 2. Save the File
+### 2. Start the application
 
-Save this content into a file named `setup_login_system.sql`.
+> Eseguire il seguente comando Maven per avviare il progetto Spring.
 
-### 3. Execute the SQL File
+```bash
+mvn spring-boot:run               
+```
 
-To execute the SQL file, you need to have MySQL installed and running. You can use the MySQL command-line tool to execute the file. Here's how you can do it:
+> Eseguire questo script SQL per inserire i dati nella table Users.
+```sql
+-- Run this procedure to test /auth/login endpoint
+INSERT INTO `users` VALUES
+(1,'ramesh@gmail.com','ramesh','$2a$10$5PiyN0MsG0y886d8xWXtwuLXK0Y7zZwcN5xm82b4oDSVr7yF0O6em','ramesh'),
+(2,'admin@gmail.com','admin','$2a$10$gqHrslMttQWSsDSVRTK1OehkkBiXsJ/a4z2OURU./dizwOQu5Lovu','admin');
 
-1. **Open a Terminal or Command Prompt:**
+INSERT INTO `roles` VALUES (1,'ROLE_ADMIN'),(2,'ROLE_USER');
 
-2. **Navigate to the Directory:**
-   Change to the directory where `setup_login_system.sql` is located.
+INSERT INTO `users_roles` VALUES (2,1),(1,2);
+```
 
-3. **Run the SQL File:**
-   Use the following command to execute the SQL script, if your MySQL username is `root`, you would use::
+> Eseguire la seguente richiesta di tipo POST. Url:
+```bash
+http://localhost:8080/api/auth/login
+```
 
-   ```bash
-   mysql -u root -p < setup_login_system.sql
-   ```
+> Body > raw (json)
+```json
+{
+    "usernameOrEmail": "admin@gmail.com",
+    "password": "admin"
+}
+```
 
-   Replace `root` with your MySQL username. You will be prompted to enter your MySQL password.
-
-   After entering your password, the SQL commands in `setup_login_system.sql` will be executed, and your database and tables will be created.
 
 
 ## Ricerca e Sviluppo di Nuove Funzionalità

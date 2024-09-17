@@ -328,3 +328,141 @@ http://localhost:8080/h2-console
 ### Conclusione
 
 Ora puoi eseguire e testare tutti gli endpoint che abbiamo creato. Assicurati di avere un token JWT valido per accedere alle operazioni che richiedono autenticazione.
+
+To implement this scenario, where a `Book` is a specific type of `Product` with additional attributes (like `isbn`, `titolo`, `autore`, etc.), you can use inheritance in Java with JPA. Specifically, you can create a `Book` class that extends the `Product` class.
+
+### Step-by-Step Implementation
+
+1. **Extend the `Product` Class**: The `Book` class will inherit the common attributes from `Product` (like `name`, `sku`, `price`, and `categories`), and you'll add book-specific attributes such as `isbn`, `titolo`, `autore`, etc.
+2. **Inheritance with JPA**: Use `@Inheritance(strategy = InheritanceType.JOINED)` or `@Inheritance(strategy = InheritanceType.SINGLE_TABLE)` to map the `Product` and `Book` entities in the database.
+
+Here’s how you can model this:
+
+### `Product` Class
+
+```java
+package com.example.biblioteca_sicura.model;
+
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "products")
+@Inheritance(strategy = InheritanceType.JOINED) // Using JOINED inheritance strategy
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String sku; // Stock Keeping Unit
+
+    @Column(nullable = false)
+    private Double price;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "products_categories",
+        joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
+    )
+    private Set<Category> categories;
+}
+```
+
+### `Book` Class
+
+Now we extend the `Product` class to create a `Book` class with additional attributes like `isbn`, `titolo`, `autore`, etc.
+
+```java
+package com.example.biblioteca_sicura.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@Entity
+public class Book extends Product {
+
+    @Column(nullable = false, unique = true)
+    private Long isbn;
+
+    @Column(nullable = false)
+    private String titolo;
+
+    @Column(nullable = false)
+    private String autore;
+
+    @Column(nullable = false)
+    private String editore;
+
+    @Column
+    private String img; // URL or path to image
+}
+```
+
+### Explanation of the Changes:
+- **Inheritance**: The `Book` class extends `Product` and inherits all the basic fields (`name`, `sku`, `price`, etc.) while adding book-specific fields such as `isbn`, `titolo`, `autore`, `editore`, and `img`.
+  
+- **JPA Inheritance Strategy**:
+  - The `@Inheritance(strategy = InheritanceType.JOINED)` annotation in the `Product` class is used to map the inheritance hierarchy to separate tables (`products` and `books`). 
+    - A `JOINED` strategy means that there will be a `products` table containing the common attributes and a `books` table containing the additional attributes (and a foreign key reference to `products`).
+  - Alternatively, you can use `@Inheritance(strategy = InheritanceType.SINGLE_TABLE)` if you want all product types (including books) stored in a single table with nullable fields for specific types.
+
+---
+
+### Database Structure
+
+With this setup:
+- There will be a `products` table that holds the common fields (`id`, `name`, `sku`, `price`).
+- There will also be a `books` table with fields (`id`, `isbn`, `titolo`, `autore`, `editore`, `img`), and the `id` in the `books` table will reference the `id` in the `products` table.
+
+### Example SQL Output (With `JOINED` Inheritance)
+
+- **products** table:
+  ```sql
+  +----+-------+--------+-------+
+  | id | name  | sku    | price |
+  +----+-------+--------+-------+
+  | 1  | Book1 | SKU001 | 19.99 |
+  +----+-------+--------+-------+
+  ```
+
+- **books** table:
+  ```sql
+  +----+------------+----------+--------+----------+------------+
+  | id | isbn       | titolo   | autore | editore  | img        |
+  +----+------------+----------+--------+----------+------------+
+  | 1  | 1234567890 | My Book  | Author | Publisher | img_url    |
+  +----+------------+----------+--------+----------+------------+
+  ```
+
+Would you like more details on how to configure the database or additional functionality for this setup?
